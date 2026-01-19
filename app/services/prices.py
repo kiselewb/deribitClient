@@ -1,12 +1,18 @@
-from app.schemas.prices import PriceAdd
+from datetime import datetime
+
 from app.services.base import BaseService
 
 
 class PricesService(BaseService):
-    async def add_price(self, price_data: PriceAdd):
-        price = await self.db.prices.add(price_data)
-        await self.db.commit()
-        return price
+    async def get_all(
+            self,
+            ticker: str,
+            limit: int = 100,
+            offset: int = 0,
+            date_from: datetime | None = None,
+            date_to: datetime | None = None
+    ) -> tuple[list, int]:
+        pass
 
-    async def get_prices(self):
-        return await self.db.prices.get_all()
+    async def get_latest(self, ticker: str):
+        pass

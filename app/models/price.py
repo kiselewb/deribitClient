@@ -6,7 +6,7 @@ from decimal import Decimal
 from app.models.base import Base
 
 
-class PricesOrm(Base):
+class Price(Base):
     __tablename__ = "prices"
 
     id: Mapped[int] = mapped_column(primary_key=True)

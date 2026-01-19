@@ -1,6 +1,5 @@
 import aiohttp
 from decimal import Decimal
-from typing import Optional
 from app.config import settings
 
 
@@ -9,7 +8,7 @@ class DeribitClientError(Exception):
 
 
 class DeribitClient:
-    def __init__(self, base_url: Optional[str] = None):
+    def __init__(self, base_url: str | None = None):
         self.base_url = base_url or settings.DERIBIT_API_URL
 
     async def get_index_price(self, currency: str) -> Decimal:
