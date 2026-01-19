@@ -8,12 +8,12 @@ class PricesRepository(BaseRepository):
     model = Price
 
     async def get_all_with_filters(
-            self,
-            ticker: str,
-            limit: int = 100,
-            offset: int = 0,
-            date_from: datetime | None = None,
-            date_to: datetime | None = None,
+        self,
+        ticker: str,
+        limit: int = 100,
+        offset: int = 0,
+        date_from: datetime | None = None,
+        date_to: datetime | None = None,
     ) -> tuple[list[Price], int]:
         conditions = [Price.ticker == ticker]
 

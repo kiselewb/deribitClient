@@ -1,5 +1,4 @@
-from pydantic import BaseModel
-from sqlalchemy import select, insert
+from sqlalchemy import select
 
 
 class BaseRepository:
