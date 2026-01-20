@@ -19,3 +19,6 @@ class PricesService(BaseService):
 
     async def get_latest(self, ticker: str) -> PriceResponse:
         return await self.db.prices.get_latest(ticker)
+
+    async def add_price(self, data):
+        return await self.db.prices.add(data)

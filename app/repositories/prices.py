@@ -1,11 +1,18 @@
 from datetime import datetime
-from sqlalchemy import select, func, and_
+from sqlalchemy import select, insert, func, and_
+from app.schemas.prices import PriceCreate, PriceResponse
 from app.models.price import Price
 from app.repositories.base import BaseRepository
 
 
 class PricesRepository(BaseRepository):
     model = Price
+
+    async def add(self, data: PriceCreate) -> PriceResponse:
+        stmt = insert(self.model).values(**data.model_dump()).returning(self.model)
+        result = await self.session.execute(stmt)
+        await self.session.commit()
+        return result.scalar_one()
 
     async def get_all_with_filters(
         self,
@@ -14,21 +21,21 @@ class PricesRepository(BaseRepository):
         offset: int = 0,
         date_from: datetime | None = None,
         date_to: datetime | None = None,
-    ) -> tuple[list[Price], int]:
-        conditions = [Price.ticker == ticker]
+    ) -> tuple[list[PriceResponse], int]:
+        conditions = [self.model.ticker == ticker]
 
         if date_from is not None:
-            conditions.append(Price.created_at >= date_from)
+            conditions.append(self.model.created_at >= date_from)
 
         if date_to is not None:
-            conditions.append(Price.created_at <= date_to)
+            conditions.append(self.model.created_at <= date_to)
 
         where_clause = and_(*conditions)
 
         query = (
-            select(Price)
+            select(self.model)
             .where(where_clause)
-            .order_by(Price.created_at.desc())
+            .order_by(self.model.created_at.desc())
             .limit(limit)
             .offset(offset)
         )
@@ -36,17 +43,17 @@ class PricesRepository(BaseRepository):
         result = await self.session.execute(query)
         prices = result.scalars().all()
 
-        count_query = select(func.count()).select_from(Price).where(where_clause)
+        count_query = select(func.count()).select_from(self.model).where(where_clause)
         count_result = await self.session.execute(count_query)
         total = count_result.scalar_one()
 
         return list(prices), total
 
-    async def get_latest(self, ticker: str) -> Price | None:
+    async def get_latest(self, ticker: str) -> PriceResponse | None:
         query = (
-            select(Price)
-            .where(Price.ticker == ticker)
-            .order_by(Price.created_at.desc())
+            select(self.model)
+            .where(self.model.ticker == ticker)
+            .order_by(self.model.created_at.desc())
             .limit(1)
         )
 

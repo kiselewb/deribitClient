@@ -3,6 +3,7 @@ from datetime import datetime
 from fastapi import APIRouter
 
 from app.api.dependencies import DBDep
+from app.schemas.prices import PriceCreate
 from app.services.prices import PricesService
 
 router = APIRouter(prefix="/prices", tags=["prices"])
@@ -23,3 +24,8 @@ async def get_prices(
 @router.get("/latest")
 async def get_latest_price(db: DBDep, ticker: str):
     return await PricesService(db).get_latest(ticker)
+
+
+@router.post("")
+async def create_price(db: DBDep, data: PriceCreate):
+    return await PricesService(db).add_price(data)

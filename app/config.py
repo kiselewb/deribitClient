@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     REDIS_HOST: str
     REDIS_PORT: int
 
-    DERIBIT_API_URL: str
+    DERIBIT_API_URL: str = "https://www.deribit.com/api/v2"
 
     CELERY_BEAT_SCHEDULE_INTERVAL: int = 60
 
