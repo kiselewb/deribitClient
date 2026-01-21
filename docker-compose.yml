@@ -1,5 +1,4 @@
 services:
-  # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
     container_name: crypto_postgres
@@ -17,7 +16,6 @@ services:
       timeout: 5s
       retries: 10
 
-  # Redis (Celery Broker)
   redis:
     image: redis:7-alpine
     container_name: crypto_redis
@@ -29,7 +27,6 @@ services:
       timeout: 5s
       retries: 10
 
-  # Init: Apply migrations automatically
   init:
     build:
       context: .
@@ -43,7 +40,6 @@ services:
         condition: service_healthy
     restart: "no"
 
-  # FastAPI Application
   app:
     build:
       context: .
@@ -65,7 +61,6 @@ services:
       - .:/app
     restart: unless-stopped
 
-  # Celery Worker
   celery_worker:
     build:
       context: .
@@ -85,7 +80,6 @@ services:
       - .:/app
     restart: unless-stopped
 
-  # Celery Beat (Scheduler)
   celery_beat:
     build:
       context: .

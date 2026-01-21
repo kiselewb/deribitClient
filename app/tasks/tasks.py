@@ -7,7 +7,7 @@ from app.database.database import async_session_maker_null_pool
 from app.repositories.prices import PricesRepository
 from app.schemas.prices import PriceCreate
 
-# Configure logging
+
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
