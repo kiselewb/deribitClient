@@ -1,8 +1,8 @@
 """Init tables
 
-Revision ID: af8d814de2cc
+Revision ID: 616e0757a847
 Revises:
-Create Date: 2026-01-19 13:08:36.996130
+Create Date: 2026-01-21 11:13:02.763750
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "af8d814de2cc"
+revision: str = "616e0757a847"
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -28,8 +28,8 @@ def upgrade() -> None:
         sa.Column("price", sa.Numeric(precision=20, scale=8), nullable=False),
         sa.Column(
             "created_at",
-            sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            sa.BigInteger(),
+            server_default=sa.text("CAST(EXTRACT(epoch FROM now()) AS BIGINT)"),
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id"),

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.schemas.prices import PriceResponse
+from app.schemas.prices import PriceResponse, PriceListResponse
 from app.services.base import BaseService
 
 
@@ -12,7 +12,7 @@ class PricesService(BaseService):
         offset: int = 0,
         date_from: datetime | None = None,
         date_to: datetime | None = None,
-    ) -> tuple[list[PriceResponse], int]:
+    ) -> PriceListResponse:
         return await self.db.prices.get_all_with_filters(
             ticker, limit, offset, date_from, date_to
         )
@@ -20,5 +20,5 @@ class PricesService(BaseService):
     async def get_latest(self, ticker: str) -> PriceResponse:
         return await self.db.prices.get_latest(ticker)
 
-    async def add_price(self, data):
+    async def add_price(self, data) -> PriceResponse:
         return await self.db.prices.add(data)
