@@ -16,7 +16,7 @@ class Ticker(str, Enum):
 router = APIRouter(prefix="/prices", tags=["prices"])
 
 
-@router.get("", response_model=PriceListResponse)
+@router.get("")
 async def get_prices(
     db: DBDep,
     ticker: Ticker,
@@ -36,7 +36,7 @@ async def get_prices(
         )
 
 
-@router.get("/latest", response_model=PriceResponse)
+@router.get("/latest")
 async def get_latest_price(db: DBDep, ticker: Ticker) -> PriceResponse:
     try:
         price = await PricesService(db).get_latest(ticker.value)
@@ -58,7 +58,7 @@ async def get_latest_price(db: DBDep, ticker: Ticker) -> PriceResponse:
         )
 
 
-@router.post("", response_model=PriceResponse)
+@router.post("")
 async def create_price(db: DBDep, data: PriceCreate) -> PriceResponse:
     try:
         return await PricesService(db).add_price(data)

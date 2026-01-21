@@ -8,6 +8,10 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
 
+    TEST_DATABASE_URL: str = (
+        "postgresql+asyncpg://postgres:postgres@localhost:5432/cp_test"
+    )
+
     REDIS_HOST: str
     REDIS_PORT: int
 

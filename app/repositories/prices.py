@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import select, insert, func, and_
+from sqlalchemy import select, insert, func, and_, delete
 from app.schemas.prices import PriceCreate, PriceResponse, PriceListResponse
 from app.models.price import Price
 from app.repositories.base import BaseRepository
@@ -60,3 +60,7 @@ class PricesRepository(BaseRepository):
 
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
+
+    async def delete_all(self):
+        stmt = delete(self.model)
+        await self.session.execute(stmt)
